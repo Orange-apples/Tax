@@ -1,0 +1,135 @@
+﻿<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>用户管理</title>
+    <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/css/skin1.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript">
+      	//全选、全反选
+		function doSelectAll(){
+			// jquery 1.6 前
+			//$("input[name=selectedRow]").attr("checked", $("#selAll").is(":checked"));
+			//prop jquery 1.6+建议使用
+			$("input[name=ids]").prop("checked", $("#selAll").is(":checked"));
+		}
+
+        //模糊查询
+        function doSearch() {
+            $("#form1").attr("action", "/account");
+            $("#form1").attr("method", "GET");
+            $("#form1").submit();
+        }
+
+        //新增
+        function insertPage(){
+		    $("#form1").attr("action","/account/insertPage");
+		    $("#form1").attr("method","GET");
+            $("#form1").submit();
+        }
+        //编辑
+        function updatePage(id){
+            $("#form1").attr("action","/account/updatePage?id=" + id);
+            $("#form1").submit();
+        }
+        //删除
+        function doDelete(id){
+            if (confirm("确定要删除吗？")) {
+                $("#form1").attr("action","/account/delete?id=" + id);
+                $("#form1").submit();
+            } else {
+                return false;
+            }
+        }
+        //批量删除
+        function doDeleteAll(){
+            if (confirm("确定要删除吗？")) {
+                $("#form1").attr("action", "/account/deleteAll");
+                $("#form1").submit();
+            } else {
+                return false;
+            }
+        }
+        //导出用户列表
+        function doExportExcel(){
+            window.open("/account/user_exportExcel.action");
+        }
+        //导入
+        function doImportExcel(){
+            $("#form1").attr("action","/account/user_importExcel.action");
+            $("#form1").submit();
+        }
+    </script>
+</head>
+<body class="rightBody">
+<form id="form1" name="form1" action="" method="post" enctype="multipart/form-data">
+    <div class="p_d_1">
+        <div class="p_d_1_1">
+            <div class="content_info">
+                <div class="c_crumbs"><div><b></b><strong>用户管理</strong></div> </div>
+                <div class="search_art">
+                    <li>
+                        <input name="current" type="hidden" value="1"/>
+                        用户名：<input name="name" id="userName" />
+                    </li>
+                    <li><input type="button" class="s_button" value="搜 索" onclick="doSearch()"/></li>
+                    <li style="float:right;">
+                        <input type="button" value="新增" class="s_button" onclick="insertPage()"/>&nbsp;
+                        <input type="button" value="删除" class="s_button" onclick="doDeleteAll()"/>&nbsp;
+                        <input type="button" value="导出" class="s_button" onclick="doExportExcel()"/>&nbsp;
+                    	<input name="userExcel" type="file"/>
+                        <input type="button" value="导入" class="s_button" onclick="doImportExcel()"/>&nbsp;
+
+                    </li>
+                </div>
+
+                <div class="t_list" style="margin:0px; border:0px none;">
+                    <table width="100%" border="0">
+                        <tr class="t_tit">
+                            <td width="30" align="center"><input type="checkbox" id="selAll" onclick="doSelectAll()" /></td>
+                            <td width="140" align="center">用户名</td>
+                            <td width="140" align="center">角色</td>
+                            <td width="160" align="center">所属部门</td>
+                            <td width="80" align="center">性别</td>
+                            <td align="center">电子邮箱</td>
+                            <td width="100" align="center">操作</td>
+                        </tr>
+
+                            <tr bgcolor="f8f8f8" th:each="account:${page.records}">
+                                <td align="center">
+                                    <input type="checkbox" name="ids" th:value="${account.id}"/>
+                                </td>
+                                <td align="center" th:text="${account.name}">${ record.name }</td>
+                                <td align="center" th:text="${account.role.name}">${ record.roleName }</td>
+                                <td align="center" th:text="${account.dept.name}">${ record.deptName }</td>
+                                <td align="center" th:text="${account.gender==1?'男':'女'}">${ record.gender==1?"男":"女" }</td>
+                                <td align="center" th:text="${account.email}">${ record.email }</td>
+                                <td align="center">
+                                    <a href="#" th:onclick="updatePage('[[${account.id}]]')">编辑</a>
+                                    <a href="#" th:onclick="doDelete('[[${account.id}]]')">删除</a>
+                                </td>
+                            </tr>
+
+                    </table>
+                </div>
+            </div>
+        <div class="c_pate" style="margin-top: 5px;">
+		<table width="100%" class="pageDown" border="0" cellspacing="0"
+			cellpadding="0">
+			<tr>
+				<td align="right">
+                 	总共[[${page.total}]]条记录，当前第 [[${page.current}]] 页，共 [[${page.pages}]] 页 &nbsp;&nbsp;
+
+                        <a th:if="${page.hasPrevious()}" th:href="@{/account(pages=${page.current - 1},name=${name})}">上一页</a>
+
+
+                        <a th:if="${page.hasNext()}" th:href="@{/account(pages=${page.current + 1},name=${name})}">下一页</a>
+
+			    </td>
+			</tr>
+		</table>	
+        </div>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>

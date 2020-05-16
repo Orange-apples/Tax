@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.tax.dao.RoleDao">
+
+    <resultMap type="com.galaxy.tax.entity.Role" id="RoleMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
+        <collection property="privileges" column="id" ofType="com.galaxy.tax.entity.Privilege" select="selectPrivileges"/>
+    </resultMap>
+<select id="selectPrivileges" resultType="privilege">
+    select p.id,p.name,p.code from tax_privilege p , tax_role_privilege rp where p.id =rp.p_id and rp.r_id=#{id}
+</select>
+
+</mapper>
