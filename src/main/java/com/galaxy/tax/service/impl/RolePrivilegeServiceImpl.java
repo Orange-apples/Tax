@@ -1,5 +1,6 @@
 package com.galaxy.tax.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.galaxy.tax.entity.RolePrivilege;
 import com.galaxy.tax.dao.RolePrivilegeDao;
 import com.galaxy.tax.service.RolePrivilegeService;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-05-16 11:37:39
  */
-@Service("taxRolePrivilegeService")
-public class RolePrivilegeServiceImpl implements RolePrivilegeService {
+@Service("rolePrivilegeService")
+public class RolePrivilegeServiceImpl extends ServiceImpl<RolePrivilegeDao,RolePrivilege> implements RolePrivilegeService {
 
 }

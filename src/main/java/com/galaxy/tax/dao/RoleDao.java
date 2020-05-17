@@ -2,6 +2,7 @@ package com.galaxy.tax.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.galaxy.tax.entity.Role;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * @author makejava
  * @since 2020-05-16 11:37:39
  */
+@CacheNamespace(blocking = true)
+
 public interface RoleDao extends BaseMapper<Role> {
 
 }

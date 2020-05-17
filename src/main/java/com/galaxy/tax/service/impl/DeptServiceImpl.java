@@ -12,6 +12,6 @@ import org.springframework.stereotype.Service;
  * @author makejava
  * @since 2020-05-15 16:49:14
  */
-@Service("taxDeptService")
+@Service("deptService")
 public class DeptServiceImpl extends ServiceImpl<DeptDao, Dept> implements DeptService {
 }

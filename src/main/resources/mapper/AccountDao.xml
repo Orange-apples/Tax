@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.galaxy.tax.dao.AccountDao">
-
     <resultMap type="com.galaxy.tax.entity.Account" id="AccountMap">
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
@@ -19,15 +18,15 @@
         <association property="role" column="role_id" select="selectRoleById"/>
     </resultMap>
 
-    <select id="selectDeptById" resultType="com.galaxy.tax.entity.Dept">
+    <select id="selectDeptById" useCache="true" resultType="com.galaxy.tax.entity.Dept">
         select id,name from tax_dept where id = #{id}
      </select>
 
-    <select id="selectRoleById" resultMap="com.galaxy.tax.dao.RoleDao.RoleMap">
+    <select id="selectRoleById" useCache="true" resultMap="com.galaxy.tax.dao.RoleDao.RoleMap">
         select id , name,state from tax_role where id= #{id}
     </select>
     <!--查询图片-->
-    <select id="getImg" resultType="String">
+    <select id="getImg" resultType="String" useCache="true">
         select head_img from tax_account where id = #{id}
     </select>
 

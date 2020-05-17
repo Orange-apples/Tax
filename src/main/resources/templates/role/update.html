@@ -1,8 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <%@include file="/common/header.jsp" %>
+
     <title>角色管理</title>
+    <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/css/skin1.css" rel="stylesheet" type="text/css" /></div>
 </head>
 <body class="rightBody">
 <form id="form" name="form" action="/role/update" method="post">
@@ -11,31 +12,28 @@
             <div class="content_info">
                 <div class="c_crumbs">
                     <div><b></b><strong>角色管理</strong>&nbsp;-&nbsp;新增角色</div>
-                    <input type="hidden" name="id" value="${ role.id }"/>
+                    <input type="hidden" name="id" th:value="${ role.id }"/>
                 </div>
                 <div class="tableH2">新增角色</div>
                 <table id="baseInfo" width="100%" align="center" class="list" border="0" cellpadding="0"
                        cellspacing="0">
                     <tr>
                         <td class="tdBg" width="200px">角色名称：</td>
-                        <td><input name="name" value="${ role.name }"/></td>
+                        <td><input name="name" th:value="${ role.name }"/></td>
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">角色权限：</td>
                         <td>
-                            <input name="privilegeIds" type="checkbox" value="1"/>工作主页
-                            <input name="privilegeIds" type="checkbox" value="2"/>行政管理
-                            <input name="privilegeIds" type="checkbox" value="3"/>后勤服务
-                            <input name="privilegeIds" type="checkbox" value="4"/>在线学习
-                            <input name="privilegeIds" type="checkbox" value="5"/>纳税服务
-                            <input id="pids" type="hidden" value="${pids}"/>
+                            <input name="privilegeIds" th:each="pri:${privileges}" type="checkbox" th:value="${pri.id}" th:text="${pri.name}"/>
+
+                            <input id="pids" type="hidden" th:value="${pids}"/>
                         </td>
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">状态：</td>
                         <td>
-                            <input name="state" type="radio" value="有效" checked/>有效
-                            <input name="state" type="radio" value="无效"/>无效
+                            <input name="state" type="radio" value="有效" th:checked="${role.state eq '有效'}"/>有效
+                            <input name="state" type="radio" value="无效" th:checked="${role.state ne '有效'}"/>无效
                         </td>
                     </tr>
                 </table>
@@ -55,7 +53,7 @@
 
     //当页面加载完成的时候，自动调用该方法
     window.onload= function () {
-        $("input[value='${role.state}']").attr("checked","checked");
+
         //获得所要回显的值，此处为：100,1001,200,1400
         var checkeds = $("#pids").val();
         //拆分为字符串数组

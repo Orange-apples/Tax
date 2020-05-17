@@ -1,9 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <%@include file="/common/header.jsp" %>
     <title>角色管理</title>
+    <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/css/skin1.css" rel="stylesheet" type="text/css" /></div>
     <script type="text/javascript">
 
         //全选、全反选
@@ -16,7 +15,7 @@
 
         //模糊查询
         function doSearch() {
-            $("#form1").attr("action", "/role/list");
+            $("#form1").attr("action", "/role");
             $("#form1").attr("method", "GET");
             $("#form1").submit();
         }
@@ -68,7 +67,7 @@
                         <input name="current" type="hidden" value="1"/>
                         角色名称：<input name="name" id="name"/>
                     </li>
-                    <li><input type="button" class="s_button" value="搜 索" onclick="doSearch()"/></li>
+                    <li><input type="button" class="s_button" value="搜 索" onclick="doSearch()"></li>
                     <li style="float:right;">
                         <input type="button" value="新增" class="s_button" onclick="insertPage()"/>&nbsp;
                         <input type="button" value="删除" class="s_button" onclick="doDeleteAll()"/>&nbsp;
@@ -86,24 +85,19 @@
                             <td width="80" align="center">状态</td>
                             <td width="120" align="center">操作</td>
                         </tr>
-                        <c:forEach items="${mapPage.records}" var="record">
-                            <tr
-                                    <c:if test="${ record.index%2==0 }">bgcolor="f8f8f8"</c:if> >
-                                <td align="center">
-                                    <input type="checkbox" name="ids" value="${ record.id }"/></td>
-                                <td align="center">${ record.name }</td>
-                                <td align="center">
-                                    <c:forEach items="${record.privilegeList}" var="privilege">
-                                        ${ privilege.name };
-                                    </c:forEach>
-                                </td>
-                                <td align="center">${ record.state }</td>
-                                <td align="center">
-                                    <a href="javascript:updatePage(${ record.id })">编辑</a>
-                                    <a href="javascript:doDelete(${ record.id })">删除</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
+                        <tr th:each="record:${rolePage.getRecords()}">
+                        <td align="center">
+                            <input type="checkbox" name="ids" th:value="${ record.id }"/></td>
+                        <td align="center" th:text="${ record.name }"></td>
+                        <td align="center">
+                          <span th:each="privilege:${record.privileges}" th:text="${privilege.name+' '}"></span>
+                        </td>
+                        <td align="center" th:text="${ record.state }"></td>
+                        <td align="center">
+                            <a href="#" th:onclick="updatePage('[[${record.id}]]')">编辑</a>
+                            <a href="#" th:onclick="doDelete('[[${record.id}]]')">删除</a>
+                        </td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -112,13 +106,13 @@
                        cellpadding="0">
                     <tr>
                         <td align="right">
-                            总共${mapPage.total}条记录，当前第 ${mapPage.current} 页，共 ${mapPage.pages} 页 &nbsp;&nbsp;
-                            <c:if test="${mapPage.current>1}">
-                                <a href="list?current=${mapPage.current-1}">上一页</a>
-                            </c:if>
-                            <c:if test="${mapPage.current<mapPage.total}">
-                                <a href="list?current=${mapPage.current+1}">下一页</a>
-                            </c:if>
+                            总共[[${rolePage.total}]]条记录，当前第 [[${rolePage.current}]] 页，共 [[${rolePage.pages}]] 页 &nbsp;&nbsp;
+
+                                <a th:if="${rolePage.hasPrevious()}" th:href="@{/role(pages=${rolePage.current - 1},name = ${name})}">上一页</a>
+
+
+                                <a th:if="${rolePage.hasNext()}" th:href="@{/role(pages=${rolePage.current + 1},name = ${name})}">下一页</a>
+
                         </td>
                     </tr>
                 </table>

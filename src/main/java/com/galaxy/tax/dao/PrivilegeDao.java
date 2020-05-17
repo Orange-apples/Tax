@@ -1,14 +1,10 @@
 package com.galaxy.tax.dao;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import netscape.security.Privilege;
+import com.galaxy.tax.entity.Privilege;
+import org.apache.ibatis.annotations.CacheNamespace;
 
-/**
- * (TaxPrivilege)表数据库访问层
- *
- * @author makejava
- * @since 2020-05-16 11:37:39
- */
+@CacheNamespace(blocking = true)
+
 public interface PrivilegeDao extends BaseMapper<Privilege> {
-
 }

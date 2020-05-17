@@ -42,6 +42,8 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     #自动生成主键
     use-generated-keys: true
+    #开启缓存
+    cache-enabled: true
     #类别名
   type-aliases-package: com.galaxy.tax.entity
   #mapper路径

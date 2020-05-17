@@ -1,5 +1,6 @@
 package com.galaxy.tax.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.galaxy.tax.entity.Role;
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
  */
 public interface RoleService extends IService<Role> {
 
+    Page<Role> queryAllByPage(Role role,Integer pages);
 }
