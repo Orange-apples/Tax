@@ -10,7 +10,7 @@ import org.apache.ibatis.annotations.CacheNamespace;
  * @author makejava
  * @since 2020-05-15 16:49:14
  */
-@CacheNamespace(blocking = true)
+@CacheNamespace(blocking = true,flushInterval = 60000)
 
 public interface DeptDao extends BaseMapper<Dept> {
 

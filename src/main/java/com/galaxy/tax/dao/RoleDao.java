@@ -12,8 +12,7 @@ import java.util.List;
  * @author makejava
  * @since 2020-05-16 11:37:39
  */
-@CacheNamespace(blocking = true)
-
+@CacheNamespace(blocking = true,flushInterval = 60000)
 public interface RoleDao extends BaseMapper<Role> {
 
 }
