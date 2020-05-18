@@ -41,8 +41,7 @@ public class RoleController {
     @RequestMapping("/insert")
     public String insert(Role role,Integer[] privilegeIds){
         roleService.save(role);
-        for (Integer id:privilegeIds
-             ) {
+        for (Integer id:privilegeIds ) {
             rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
         }
         return "redirect:/role";
@@ -76,6 +75,8 @@ public class RoleController {
     @RequestMapping("/delete")
     public String delete(Integer id){
         roleService.removeById(id);
+        rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>()
+                .eq("r_id",id));
         return "redirect:/role";
     }
 }
