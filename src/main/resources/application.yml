@@ -32,6 +32,7 @@ spring:
     #页面缓存关闭
     cache: false
   servlet:
+    #文件配置
     multipart:
       max-file-size: 5MB
 
@@ -54,3 +55,6 @@ mybatis-plus:
       table-prefix: tax_
       #id类型
       id-type: auto
+logging:
+  file:
+    path: D://application.log

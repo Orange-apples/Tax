@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/role")
@@ -39,7 +40,7 @@ public class RoleController {
     @Resource
     RolePrivilegeService rolePrivilegeService;
     @RequestMapping("/insert")
-    public String insert(Role role,Integer[] privilegeIds){
+    public String insert(@Valid Role role, Integer[] privilegeIds){
         roleService.save(role);
         for (Integer id:privilegeIds ) {
             rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
@@ -63,7 +64,7 @@ public class RoleController {
     }
 
     @RequestMapping("/update")
-    public String update(Role role,Integer[] privilegeIds){
+    public String update(@Valid Role role,Integer[] privilegeIds){
         roleService.updateById(role);
         rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().eq("r_id",role.getId()));
         for(Integer id:privilegeIds){

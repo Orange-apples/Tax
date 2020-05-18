@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
@@ -55,55 +56,82 @@ public class AccountController {
      */
     @GetMapping
     public String List(Account account, Model model, Integer pages) {
-        account.setName(account.getName()==null?"":account.getName());
+        account.setName(account.getName() == null ? "" : account.getName());
         pages = pages == null ? 1 : pages;
         Page<Account> page = accountService.queryAll(pages, account);
         model.addAttribute("page", page);
-        model.addAttribute("name",account.getName());
+        model.addAttribute("name", account.getName());
         return "/account/list";
     }
 
     @RequestMapping("delete")
-    public String deleteById(Integer id,HttpServletRequest request){
+    public String deleteById(Integer id, HttpServletRequest request) {
         String imgPath = accountService.getImg(id);
-        new File(request.getServletContext().getRealPath("")+imgPath).delete();
+        new File(request.getServletContext().getRealPath("") + imgPath).delete();
         accountService.removeById(id);
         return "redirect:/account";
 
     }
+
     @RequestMapping("deleteAll")
-    public String deleteById(){
-        accountService.remove(new QueryWrapper<Account>().gt("id","0"));
+    public String deleteById() {
+        accountService.remove(new QueryWrapper<Account>().gt("id", "0"));
         return "redirect:/account";
     }
+
     @Resource
     DeptService deptService;
     @Resource
     RoleService roleService;
+
     @RequestMapping("updatePage")
-    public  String updatePage(Integer id,Model model){
-        model.addAttribute("account",accountService.getById(id));
-        model.addAttribute("deptList",deptService.list());
-        model.addAttribute("roleList",roleService.list());
+    public String updatePage(Integer id, Model model) {
+        model.addAttribute("account", accountService.getById(id));
+        model.addAttribute("deptList", deptService.list());
+        model.addAttribute("roleList", roleService.list());
         return "/account/update";
     }
+
+    @RequestMapping("/update")
+    public String update(@Valid Account account, MultipartFile file, HttpServletRequest request) {
+        //删除旧照片
+        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath+"accountImg/");
+        File path = new File(realPath);
+        if(!path.exists()) path.mkdirs();
+        String oldImg = request.getServletContext().getRealPath("") + accountService.getImg(account.getId());
+//
+        System.out.println(oldImg);
+        //
+        new File(oldImg).delete();
+
+        String fileName = new Date().getTime() + file.getOriginalFilename();
+        account.setHeadImg(ConstantNum.uploadPath + "accountImg/" + fileName);
+        try {
+            file.transferTo(new File(realPath + fileName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        accountService.updateById(account);
+        return "redirect:/account";
+    }
+
     @RequestMapping("insertPage")
-    public  String insertPage(Model model){
-        model.addAttribute("deptList",deptService.list());
-        model.addAttribute("roleList",roleService.list());
+    public String insertPage(Model model) {
+        model.addAttribute("deptList", deptService.list());
+        model.addAttribute("roleList", roleService.list());
         return "/account/insert";
     }
 
     @RequestMapping("/insert")
-    public String insert(Account account, MultipartFile file,HttpServletRequest request){
-        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath)+"accountImg/";
+    public String insert(@Valid Account account, MultipartFile file, HttpServletRequest request) {
+        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath) + "accountImg/";
         System.out.println(realPath);
         File pathFile = new File(realPath);
-        if(!pathFile.exists())pathFile.mkdirs();
+        if (!pathFile.exists()) pathFile.mkdirs();
         String fileName = new Date().getTime() + file.getOriginalFilename();
-        account.setHeadImg(ConstantNum.uploadPath+"accountImg/"+fileName);
+        account.setHeadImg(ConstantNum.uploadPath + "accountImg/" + fileName);
         try {
-            file.transferTo(new File(realPath+fileName));
+            file.transferTo(new File(realPath + fileName));
         } catch (IOException e) {
             e.printStackTrace();
         }

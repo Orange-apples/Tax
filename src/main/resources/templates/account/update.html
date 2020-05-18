@@ -31,7 +31,7 @@
                         <td class="tdBg" width="200px">头像：</td>
                         <td>
                             <img th:src="${account.headImg}" width="20%">
-                            <input type="file" name="headImg"/>
+                            <input type="file" name="file"/>
                         </td>
                     </tr>
                     <tr>
@@ -54,7 +54,7 @@
                         <td>
                             <select name="roleId">
 
-                                    <option th:each="role:${roleList}" th:value="${role.id}" th:text="${role.name}">${role.name}</option>
+                                    <option th:selected="${account.roleId eq role.id}" th:each="role:${roleList}" th:value="${role.id}" th:text="${role.name}">${role.name}</option>
 
                             </select>
                         </td>
