@@ -74,8 +74,12 @@ public class AccountController {
     }
 
     @RequestMapping("deleteAll")
-    public String deleteById() {
-        accountService.remove(new QueryWrapper<Account>().gt("id", "0"));
+    public String deleteAll(Integer[] ids, HttpServletRequest request) {
+        if (ids != null) {
+            for (Integer id : ids) {
+                this.deleteById(id, request);
+            }
+        }
         return "redirect:/account";
     }
 
@@ -95,9 +99,9 @@ public class AccountController {
     @RequestMapping("/update")
     public String update(@Valid Account account, MultipartFile file, HttpServletRequest request) {
         //删除旧照片
-        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath+"accountImg/");
+        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath + "accountImg/");
         File path = new File(realPath);
-        if(!path.exists()) path.mkdirs();
+        if (!path.exists()) path.mkdirs();
         String oldImg = request.getServletContext().getRealPath("") + accountService.getImg(account.getId());
 //
         System.out.println(oldImg);

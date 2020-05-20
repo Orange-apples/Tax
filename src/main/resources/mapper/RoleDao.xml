@@ -5,10 +5,11 @@
         <id property="id" column="id" jdbcType="INTEGER"/>
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="state" column="state" jdbcType="VARCHAR"/>
-        <collection property="privileges" column="id" ofType="com.galaxy.tax.entity.Privilege" select="selectPrivileges"/>
+        <collection property="privileges" column="id" ofType="com.galaxy.tax.entity.Privilege"
+                    select="selectPrivileges"/>
     </resultMap>
-<select id="selectPrivileges" useCache="true" resultType="privilege">
+    <select id="selectPrivileges" useCache="true" resultType="privilege">
     select p.id,p.name,p.code from tax_privilege p , tax_role_privilege rp where p.id =rp.p_id and rp.r_id=#{id}
-</select>
+    </select>
 
 </mapper>

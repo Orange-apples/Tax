@@ -42,8 +42,10 @@ public class RoleController {
     @RequestMapping("/insert")
     public String insert(@Valid Role role, Integer[] privilegeIds){
         roleService.save(role);
-        for (Integer id:privilegeIds ) {
-            rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
+        if(privilegeIds != null){
+            for (Integer id:privilegeIds ) {
+                rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
+            }
         }
         return "redirect:/role";
     }
@@ -67,9 +69,11 @@ public class RoleController {
     public String update(@Valid Role role,Integer[] privilegeIds){
         roleService.updateById(role);
         rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>().eq("r_id",role.getId()));
-        for(Integer id:privilegeIds){
-            rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
-        }
+       if(privilegeIds != null){
+           for(Integer id:privilegeIds){
+               rolePrivilegeService.save(new RolePrivilege(role.getId(),id));
+           }
+       }
         return "redirect:/role";
     }
 
@@ -79,5 +83,15 @@ public class RoleController {
         rolePrivilegeService.remove(new QueryWrapper<RolePrivilege>()
                 .eq("r_id",id));
         return "redirect:/role";
+    }
+
+    @RequestMapping("deleteAll")
+    public String deleteAll(Integer[] ids){
+        if(ids !=null){
+            for (Integer id : ids) {
+                this.delete(id);
+            }
+        }
+        return  "redirect:/role";
     }
 }
