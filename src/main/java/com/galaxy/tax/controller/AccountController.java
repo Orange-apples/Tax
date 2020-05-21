@@ -10,6 +10,7 @@ import com.galaxy.tax.service.DeptService;
 import com.galaxy.tax.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.UUID;
@@ -97,23 +99,26 @@ public class AccountController {
     }
 
     @RequestMapping("/update")
-    public String update(@Valid Account account, MultipartFile file, HttpServletRequest request) {
+    public String update(@Valid Account account, MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
         //删除旧照片
-        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath + "accountImg/");
+        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath + "/accountImg/");
+//        String realPath = ResourceUtils.getURL("classpath:").getPath() + ConstantNum.uploadPath+"/accountImg/";
+
         File path = new File(realPath);
         if (!path.exists()) path.mkdirs();
-        String oldImg = request.getServletContext().getRealPath("") + accountService.getImg(account.getId());
+        String oldImg = request.getServletContext().getRealPath("") + account.getHeadImg();
 //
-        System.out.println(oldImg);
+        System.out.println("oldImage:" + oldImg);
         //
-        new File(oldImg).delete();
-
-        String fileName = new Date().getTime() + file.getOriginalFilename();
-        account.setHeadImg(ConstantNum.uploadPath + "accountImg/" + fileName);
-        try {
-            file.transferTo(new File(realPath + fileName));
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (!file.isEmpty()) {
+            new File(oldImg).delete();
+            String fileName = new Date().getTime() + file.getOriginalFilename();
+            account.setHeadImg(ConstantNum.uploadPath + "/accountImg/" + fileName);
+            try {
+                file.transferTo(new File(realPath + fileName));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         accountService.updateById(account);
         return "redirect:/account";
@@ -127,13 +132,15 @@ public class AccountController {
     }
 
     @RequestMapping("/insert")
-    public String insert(@Valid Account account, MultipartFile file, HttpServletRequest request) {
-        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath) + "accountImg/";
+    public String insert(@Valid Account account, MultipartFile file, HttpServletRequest request) throws FileNotFoundException {
+//        System.out.println(ResourceUtils.getURL("classpath:").getPath() + ConstantNum.uploadPath);
+        String realPath = request.getServletContext().getRealPath(ConstantNum.uploadPath) + "/accountImg/";
+//        String realPath = ResourceUtils.getURL("classpath:").getPath() + ConstantNum.uploadPath+"/accountImg/";
         System.out.println(realPath);
         File pathFile = new File(realPath);
         if (!pathFile.exists()) pathFile.mkdirs();
         String fileName = new Date().getTime() + file.getOriginalFilename();
-        account.setHeadImg(ConstantNum.uploadPath + "accountImg/" + fileName);
+        account.setHeadImg(ConstantNum.uploadPath + "/accountImg/" + fileName);
         try {
             file.transferTo(new File(realPath + fileName));
         } catch (IOException e) {

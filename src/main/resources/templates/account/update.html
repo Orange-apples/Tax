@@ -30,7 +30,7 @@
                     <tr>
                         <td class="tdBg" width="200px">头像：</td>
                         <td>
-                            <img th:src="${account.headImg}" width="20%">
+                            <img th:src="${'/'+account.headImg}" width="20%">
                             <input type="file" name="file"/>
                         </td>
                     </tr>
@@ -41,6 +41,7 @@
                     <tr>
                         <td class="tdBg" width="200px">密码：</td>
                         <td><input name="password" th:value="${ account.password }"/></td>
+                        <td><input name="headImg" type="hidden" th:value="${ account.headImg }"/></td>
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">性别：</td>
