@@ -50,11 +50,11 @@
         }
         //导出用户列表
         function doExportExcel(){
-            window.open("/account/user_exportExcel.action");
+            window.open("/account/exportExcel");
         }
         //导入
         function doImportExcel(){
-            $("#form1").attr("action","/account/user_importExcel.action");
+            $("#form1").attr("action","/account/importExcel");
             $("#form1").submit();
         }
     </script>

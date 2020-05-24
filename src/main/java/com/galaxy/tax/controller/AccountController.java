@@ -1,17 +1,21 @@
 package com.galaxy.tax.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelReader;
+import com.alibaba.excel.read.builder.ExcelReaderBuilder;
+import com.alibaba.excel.read.listener.ReadListener;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galaxy.tax.component.ConstantNum;
+import com.galaxy.tax.component.ReadAccountListener;
 import com.galaxy.tax.entity.Account;
-import com.galaxy.tax.entity.Role;
 import com.galaxy.tax.service.AccountService;
 import com.galaxy.tax.service.DeptService;
 import com.galaxy.tax.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
@@ -21,7 +25,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * (Account)表控制层
@@ -149,5 +152,24 @@ public class AccountController {
         accountService.save(account);
         return "redirect:/account";
     }
+
+    @ResponseBody
+    @RequestMapping("/exportExcel")
+    public String exportExcel() {
+        EasyExcel.write("C:/Users/user/Desktop/Account.xlsx", Account.class).sheet("1").doWrite(accountService.list());
+        return "导出完成！C:/Users/user/Desktop/Account.xlsx";
+    }
+
+    @Resource
+    ReadAccountListener readAccountListener;
+
+    @RequestMapping("/importExcel")
+    public String importExcel(MultipartFile userExcel) throws IOException {
+        //
+
+        EasyExcel.read(userExcel.getInputStream(), Account.class, readAccountListener).sheet().doRead();
+        return "redirect:/account";
+    }
+
 
 }

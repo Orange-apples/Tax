@@ -1,5 +1,6 @@
 package com.galaxy.tax.entity;
 
+import com.alibaba.excel.annotation.ExcelIgnore;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +26,7 @@ import java.util.Date;
 @TableName(excludeProperty = {"dept","role"},resultMap = "AccountMap")
 public class Account implements Serializable {
     private static final long serialVersionUID = -31423114176472743L;
-    
+    @ExcelIgnore
     private Integer id;
 
     @NotNull(message = "姓名不能为空！")
@@ -57,8 +58,10 @@ public class Account implements Serializable {
 
     private String headImg;
 
+    @ExcelIgnore
     private Dept dept;
 
+    @ExcelIgnore
     private Role role;
 
 
