@@ -1,6 +1,7 @@
 package com.galaxy.tax.controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galaxy.tax.entity.Account;
 import com.galaxy.tax.entity.Info;
@@ -50,23 +51,36 @@ public class InfoController {
     @RequestMapping("/insertOrUpdate")
     public String insert(Info info, HttpServletRequest request) {
         System.out.println(info.getId());
-        info.setAccountId(info.getAccountId()==null?((Account) request.getSession().getAttribute("loginAccount")).getId():info.getAccountId());
-        info.setCreateTime(info.getCreateTime()==null?new Date():info.getCreateTime());
+        info.setState("启用");
+        info.setAccountId(info.getAccountId() == null ? ((Account) request.getSession().getAttribute("loginAccount")).getId() : info.getAccountId());
+        info.setCreateTime(info.getCreateTime() == null ? new Date() : info.getCreateTime());
         infoService.saveOrUpdate(info);
         return "redirect:/info";
     }
+
     @RequestMapping("/delete")
-    public String delete(Integer id){
+    public String delete(Integer id) {
         infoService.removeById(id);
         return "redirect:/info";
     }
+
     @RequestMapping("/deleteAll")
-    public String deleteAll(Integer[] ids){
+    public String deleteAll(Integer[] ids) {
         for (Integer id : ids) {
             infoService.removeById(id);
         }
         return "redirect:/info";
     }
 
+    @RequestMapping("/stopOrStart")
+    public String stopOrStart(Integer id, String state) {
+        state = "1".equals(state) ? "0" : "1";
+        infoService.update(new UpdateWrapper<Info>()
+                .eq("id", id)
+                .set(true, "state", state)
+
+        );
+        return "redirect:/info";
+    }
 
 }

@@ -80,12 +80,10 @@
                                 </td>
                                 <td align="center" th:text="${info.account.name}"></td>
                                 <td align="center" th:text="${#dates.format(info.createTime,'yyyy-MM-dd HH:mm')}"></td>
-                                <td align="center" th:text="启用"></td>
+                                <td align="center" th:text="${info.state eq '0'?'停用':'启用'}"></td>
                                 <td align="center" >
-                                	<span >
-                                	
-                                		<a href="#">停用</a>
-                                	
+                                	<span>
+                                		<a th:href="@{/info/stopOrStart(id=${info.id},state=${info.state})}" th:text="${info.state eq '0'?'启用':'停用'}">停用</a>
                                 	</span>
                                     <a th:onclick="updatePage('[[${info.id}]]')" >编辑</a>
                                     <a th:onclick="doDelete('[[${info.id}]]')" >删除</a>

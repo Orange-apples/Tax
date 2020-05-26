@@ -11,6 +11,7 @@
         <result property="remark" column="remark" jdbcType="VARCHAR"/>
         <result property="accountId" column="account_id" jdbcType="INTEGER"/>
         <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <result property="state" column="state" jdbcType="VARCHAR"/>
         <association property="category" column="category_id" select="queryCategoryById"/>
         <association property="account" column="account_id" select="queryAccountById"/>
     </resultMap>

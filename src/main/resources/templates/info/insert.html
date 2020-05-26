@@ -10,7 +10,7 @@
 </head>
 <body class="rightBody">
 <form id="form" name="form" action="/info/insertOrUpdate" method="post" enctype="multipart/form-data">
-    <input th:if="${info!=null}"  name="id" th:value="${info.id}"/>
+    <input type="hidden" th:if="${info!=null}"  name="id" th:value="${info.id}"/>
 
     <div class="p_d_1">
         <div class="p_d_1_1">
@@ -38,9 +38,9 @@
             <td class="tdBg" width="200px">备注：</td>
             <td colspan="3"><textarea name="remark" cols="90" rows="3" th:text="${info==null?'':info.remark}"></textarea></td>
         </tr>
-        <tr>
-         <td class="tdBg" width="200px" th:text="${info==null?'创建人：'+session.loginAccount.name:info.account.name}"></td>
-        </tr>
+<!--        <tr>-->
+<!--         <td class="tdBg" width="200px" th:text="${info==null?'创建人：'+session.loginAccount.name:info.account.name}"></td>-->
+<!--        </tr>-->
     </table>
     
     <div class="tc mt20">

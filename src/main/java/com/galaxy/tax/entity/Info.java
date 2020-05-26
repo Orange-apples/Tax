@@ -38,6 +38,8 @@ public class Info implements Serializable {
     
     private Date createTime;
 
+    private String state;
+
     private Account account;
 
     private InfoCategory category;
