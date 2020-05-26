@@ -1,4 +1,4 @@
-﻿<html>
+﻿<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>国税协同办公平台</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -42,12 +42,12 @@
                     <td align="center"></td>
                     <td align="left"></td>
                     <td align="right">
-                        <a><b></b><font color="red">欢迎您，xxx&nbsp;</font></a>
+                        <a><b></b><font color="red">欢迎您，[[${session.loginAccount.name}]]&nbsp;</font></a>
                     </td>
                     <td align="center"><img src="/images/home/help.png" width="12" height="17"  /></td>
                     <td align="left"><a href="javascript:void(0);">帮助</a></td>
                     <td align="center"><img src="/images/home/exit.png" width="14" height="14"   /></td>
-                    <td align="left" valign="middle" ><a href="#">退出</a></td>
+                    <td align="left" valign="middle" ><a href="/account/logout">退出</a></td>
                 </tr>
             </table>
         </td>
@@ -85,10 +85,10 @@
                     <td width="5%"><img src="/images/home/gs10.png" width="4" height="59" alt="" /></td>
                     <td width="60%"><table width="95%" border="0" cellpadding="0" cellspacing="0">
                         <tr>
-                            <td colspan="2" style=" font-weight:bold; color:#3a7daa;">xx名</td>
+                            <td colspan="2" style=" font-weight:bold; color:#3a7daa;" th:text="${session.loginAccount.name}"></td>
                         </tr>
                         <tr>
-                            <td colspan="2">所属部门：xx部门</td>
+                            <td colspan="2">所属部门：[[${session.loginAccount.dept.name}]]</td>
                         </tr>
                     </table>
                     </td>
@@ -107,13 +107,13 @@
             </div>
             <table width="98%" border="0" align="center">
             	
-                <tr>
-                    <td height="23">
+                <tr th:each="info:${infoList}">
+                    <td height="23" th:text="${info.title}">
                     xx标题
                     </td>
-                    <td width="150px">xx分类</td>
-                    <td width="150px">xx创建人</td>
-                    <td width="150px">xx创建时间</td>
+                    <td width="150px" th:text="${info.category.name}">xx分类</td>
+                    <td width="150px"  th:text="${info.account.name}">xx创建人</td>
+                    <td width="150px"  th:text="${#dates.format(info.createTime,'yyyy-MM-dd HH:mm')}">xx创建时间</td>
                 </tr>
                 
             </table>

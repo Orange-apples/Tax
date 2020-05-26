@@ -15,4 +15,6 @@ public interface AccountService extends IService<Account> {
     Page<Account> queryAll(Integer pages, Account account);
 
     String getImg(Integer id);
+
+    Account login(Account account);
 }

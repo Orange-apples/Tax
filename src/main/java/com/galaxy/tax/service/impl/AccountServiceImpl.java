@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  * @since 2020-05-15 16:35:55
  */
 @Service("accountService")
-public class AccountServiceImpl extends ServiceImpl<AccountDao,Account> implements AccountService {
+public class AccountServiceImpl extends ServiceImpl<AccountDao, Account> implements AccountService {
     @Resource
     AccountDao accountDao;
 
@@ -32,6 +32,13 @@ public class AccountServiceImpl extends ServiceImpl<AccountDao,Account> implemen
     @Override
     public String getImg(Integer id) {
         return accountDao.getImg(id);
+    }
+
+    @Override
+    public Account login(Account account) {
+        return accountDao.selectOne(new QueryWrapper<Account>()
+                .eq("name", account.getName())
+                .eq("password", account.getPassword()));
     }
 
 }

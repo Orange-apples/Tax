@@ -10,6 +10,7 @@ import com.galaxy.tax.component.ReadAccountListener;
 import com.galaxy.tax.entity.Account;
 import com.galaxy.tax.service.AccountService;
 import com.galaxy.tax.service.DeptService;
+import com.galaxy.tax.service.InfoService;
 import com.galaxy.tax.service.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,10 +41,15 @@ public class AccountController {
      */
     @Resource
     private AccountService accountService;
+    @Resource
+    private InfoService infoService;
 
     @RequestMapping("/login")
     public String login(Account account, Model model, HttpServletRequest request) {
-        if (true) {
+        Account login = accountService.login(account);
+        if (login!=null) {
+            request.getSession().setAttribute("loginAccount",login);
+            model.addAttribute("infoList",infoService.list());
             return "/home/home";
         } else {
             model.addAttribute("loginMsg", "用户名密码错误！");
