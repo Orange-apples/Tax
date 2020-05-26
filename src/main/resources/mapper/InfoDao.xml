@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.galaxy.tax.dao.InfoDao">
+
+    <resultMap type="com.galaxy.tax.entity.Info" id="InfoMap">
+        <id property="id" column="id" jdbcType="INTEGER"/>
+        <result property="refer" column="refer" jdbcType="VARCHAR"/>
+        <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="accountId" column="account_id" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="OTHER"/>
+        <association property="category" column="category_id" select="queryCategoryById"/>
+        <association property="account" column="account_id" select="queryAccountById"/>
+    </resultMap>
+
+    <select id="queryCategoryById" resultType="com.galaxy.tax.entity.InfoCategory">
+        select * from tax_info_category where id = #{id}
+    </select>
+    <select id="queryAccountById" resultType="com.galaxy.tax.entity.Account">
+        select id, name from tax_account where id = #{id}
+    </select>
+</mapper>

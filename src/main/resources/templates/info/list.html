@@ -1,0 +1,119 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<!--    <%@include file="/common/header.jsp"%>-->
+    <div th:replace="~{/common/header::header}"></div>
+    <title>信息发布管理</title>
+    <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/css/skin1.css" rel="stylesheet" type="text/css" /></div>
+    <script type="text/javascript">
+        //全选、全反选
+        function doSelectAll(){
+            // jquery 1.6 前
+            //$("input[name=selectedRow]").attr("checked", $("#selAll").is(":checked"));
+            //prop jquery 1.6+建议使用
+            $("input[name=ids]").prop("checked", $("#selAll").is(":checked"));
+        }
+
+        //模糊查询
+        function doSearch() {
+            $("#form1").attr("action", "/info");
+            $("#form1").attr("method", "GET");
+            $("#form1").submit();
+        }
+
+
+        //编辑+新增
+        function updatePage(id){
+           location.href="/info/getPage?id="+id
+        }
+        //删除
+        function doDelete(id){
+            if (confirm("确定要删除吗？")) {
+                location.href="/info/delete?id="+id
+            } else {
+                return false;
+            }
+        }
+        //批量删除
+        function doDeleteAll(){
+            if (confirm("确定要删除吗？")) {
+                $("#form1").attr("action", "/info/deleteAll");
+                $("#form1").submit();
+            } else {
+                return false;
+            }
+        }
+    </script>
+</head>
+<body class="rightBody">
+<form id="form1" name="form1" action="" method="post">
+    <div class="p_d_1">
+        <div class="p_d_1_1">
+            <div class="content_info">
+                <div class="c_crumbs"><div><b></b><strong>信息发布管理</strong></div> </div>
+                <div class="search_art">
+                    <li>
+                        信息标题：<input name="title" id="infoTitle" />
+                    </li>
+                    <li><input type="button" class="s_button" value="搜 索" onclick="doSearch()"/></li>
+                    <li style="float:right;">
+                        <input type="button" value="新增" class="s_button" onclick="updatePage(0)"/>&nbsp;
+                        <input type="button" value="删除" class="s_button" onclick="doDeleteAll()"/>&nbsp;
+                    </li>
+                </div>
+
+                <div class="t_list" style="margin:0px; border:0px none;">
+                    <table width="100%" border="0">
+                        <tr class="t_tit">
+                            <td width="30" align="center"><input type="checkbox"  id="selAll" onclick="doSelectAll()" /></td>
+                            <td align="center">信息标题</td>
+                            <td width="120" align="center">信息分类</td>
+                            <td width="120" align="center">创建人</td>
+                            <td width="140" align="center">创建时间</td>
+                            <td width="80" align="center">状态</td>
+                            <td width="120" align="center">操作</td>
+                        </tr>
+                            <tr th:each="info:${page.getRecords()}">
+                                <td align="center"><input type="checkbox" name="ids" th:value="${info.id}"/></td>
+                                <td align="center" th:text="${info.title}"></td>
+                                <td align="center" th:text="${info.category.name}">
+                                </td>
+                                <td align="center" th:text="${info.account.name}"></td>
+                                <td align="center" th:text="${#dates.format(info.createTime,'yyyy-MM-dd HH:mm')}"></td>
+                                <td align="center" th:text="启用"></td>
+                                <td align="center" >
+                                	<span >
+                                	
+                                		<a href="#">停用</a>
+                                	
+                                	</span>
+                                    <a th:onclick="updatePage('[[${info.id}]]')" >编辑</a>
+                                    <a th:onclick="doDelete('[[${info.id}]]')" >删除</a>
+                                </td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        <div class="c_pate" style="margin-top: 5px;">
+            <table width="100%" class="pageDown" border="0" cellspacing="0"
+                   cellpadding="0">
+                <tr>
+                    <td align="right">
+                        总共[[${page.total}]]条记录，当前第 [[${page.current}]] 页，共 [[${page.pages}]] 页 &nbsp;&nbsp;
+
+                        <a th:if="${page.hasPrevious()}" th:href="@{/info(pages=${page.current - 1},title=${title})}">上一页</a>
+
+
+                        <a th:if="${page.hasNext()}" th:href="@{/info(pages=${page.current + 1},title=${title})}">下一页</a>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        </div>
+    </div>
+</form>
+
+</body>
+</html>
