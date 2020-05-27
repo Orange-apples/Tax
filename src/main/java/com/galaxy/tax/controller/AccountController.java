@@ -4,14 +4,13 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelReader;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.read.listener.ReadListener;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.galaxy.tax.component.ConstantNum;
 import com.galaxy.tax.component.ReadAccountListener;
 import com.galaxy.tax.entity.Account;
-import com.galaxy.tax.service.AccountService;
-import com.galaxy.tax.service.DeptService;
-import com.galaxy.tax.service.InfoService;
-import com.galaxy.tax.service.RoleService;
+import com.galaxy.tax.entity.Complaint;
+import com.galaxy.tax.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,19 +42,34 @@ public class AccountController {
     private AccountService accountService;
     @Resource
     private InfoService infoService;
-
+    @Resource
+    ComplaintService complaintService;
     @RequestMapping("/login")
     public String login(Account account, Model model, HttpServletRequest request) {
         Account login = accountService.login(account);
         if (login!=null) {
             request.getSession().setAttribute("loginAccount",login);
-            model.addAttribute("infoList",infoService.list());
-            return "/home/home";
+
+            return "redirect:/account/home";
         } else {
             model.addAttribute("loginMsg", "用户名密码错误！");
             return "/login";
         }
 
+    }
+    @RequestMapping("/home")
+    public String home(Model model,HttpServletRequest request){
+        model.addAttribute("infoList",infoService.list());
+        model.addAttribute("complaintList",complaintService.list(new QueryWrapper<Complaint>()
+                .eq("account_id",  ((Account) request.getSession().getAttribute("loginAccount")).getId())
+        ));
+        return "/home/home";
+    }
+
+    @RequestMapping("/logout")
+    public String exit(HttpServletRequest request){
+        request.getSession().invalidate();
+        return "redirect:/";
     }
 
     /**

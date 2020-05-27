@@ -27,8 +27,5 @@ public class TaxServiceController {
     public  String left(){
         return "/tax/left";
     }
-    @RequestMapping("/home")
-    public  String home(){
-        return "/home/home";
-    }
+
 }

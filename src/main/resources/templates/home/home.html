@@ -57,11 +57,11 @@
 <!-- 导航{ -->
 <div class="menu">
     <ul class="clearfix">
-        <li class=""><a href="/taxService/home">工作主页</a></li>
+        <li class=""><a href="/account/home">工作主页</a></li>
         <li><a href="javascript:void(0);">行政管理</a></li>
         <li><a href="javascript:void(0);">后勤服务</a></li>
         <li><a href="javascript:void(0);">在线学习</a></li>       
-        <li><a href="/taxService/frame">纳税服务</a> </li>
+        <li><a th:href="${session.loginAccount.roleId eq 1?'/taxService/frame':'#'}">纳税服务</a> </li>
         <li><a href="javascript:void(0);">我的空间</a></li>
     </ul>
 </div>
@@ -127,18 +127,21 @@
             <div class="lc_grzxbt">
                 <h1>我的投诉</h1>
                 <div style="float:right;padding-top:3px;">
-                	<a action="home_complainAddUI" namespace="/sys">我要投诉</a>&nbsp;&nbsp;
+                	<a href="/complaint/insertPage" namespace="/sys">我要投诉</a>&nbsp;&nbsp;
                 </div>
             </div>
             <table width="98%" border="0" align="center">
                 
-                <tr>
-                    <td height="23">
+                <tr th:each="complaint:${complaintList}">
+                    <td height="23" th:text="${complaint.title}">
                     xxx标题
                     </td>
-                    <td width="180px">xx受理状态</td>
-                    <td width="180px">是否匿名投诉</td>
-                    <td width="180px">投诉时间</td>
+                    <td height="23" th:text="${complaint.dept.name}">
+                    xxx标题
+                    </td>
+                    <td width="180px"  th:text="${complaint.state eq '0'?'未受理':'已受理'}">xx受理状态</td>
+                    <td width="180px"  th:text="${complaint.useName eq '0'?'未匿名':'匿名'}">是否匿名投诉</td>
+                    <td width="180px" th:text="${#dates.format(complaint.createTime,'yyyy-MM-dd HH:mm')}">投诉时间</td>
                 </tr>
                 
             </table>
