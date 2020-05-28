@@ -10,6 +10,7 @@ import com.galaxy.tax.component.ConstantNum;
 import com.galaxy.tax.component.ReadAccountListener;
 import com.galaxy.tax.entity.Account;
 import com.galaxy.tax.entity.Complaint;
+import com.galaxy.tax.entity.Info;
 import com.galaxy.tax.service.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -59,7 +60,7 @@ public class AccountController {
     }
     @RequestMapping("/home")
     public String home(Model model,HttpServletRequest request){
-        model.addAttribute("infoList",infoService.list());
+        model.addAttribute("infoList",infoService.list(new QueryWrapper<Info>().eq("state",1)));
         model.addAttribute("complaintList",complaintService.list(new QueryWrapper<Complaint>()
                 .eq("account_id",  ((Account) request.getSession().getAttribute("loginAccount")).getId())
         ));

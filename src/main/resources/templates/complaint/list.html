@@ -56,14 +56,21 @@
                         信息标题：<input name="title" id="infoTitle" />
                     </li>
                     <li>
-                        时间：<input name="startTime" readonly="readonly" id="infoTitle" /> --
-                        <input name="endTime" readonly="readonly" id="infoTitle" />
+                        时间：<input name="startTime" readonly="readonly" id="infoTitle"  onClick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})"/> ->
+                        <input name="endTime" readonly="readonly" onClick="WdatePicker({skin:'whyGreen',dateFmt:'yyyy-MM-dd'})"/>
+                    </li>
+                    <li>
+                        状态：<select name="state">
+                        <option value="">————</option>
+                        <option value="0">未受理</option>
+                        <option value="1">已受理</option>
+                    </select>
                     </li>
                     <li><input type="button" class="s_button" value="搜 索" onclick="doSearch()"/></li>
-                    <li style="float:right;">
+                   <!-- <li style="float:right;">
                         <input type="button" value="新增" class="s_button" onclick="updatePage(0)"/>&nbsp;
                         <input type="button" value="删除" class="s_button" onclick="doDeleteAll()"/>&nbsp;
-                    </li>
+                    </li>-->
                 </div>
 
                 <div class="t_list" style="margin:0px; border:0px none;">
@@ -81,13 +88,13 @@
                                 <td align="center"><input type="checkbox" name="ids" th:value="${complaint.id}"/></td>
                                 <td align="center" th:text="${complaint.title}"></td>
                                 </td>
-                                <td align="center" th:text="${complaint.useName eq '0'?'匿名':complaint.account.name}"></td>
+                                <td align="center" th:text="${complaint.useName eq '0'?complaint.account.name:'匿名'}"></td>
                                 <td align="center" th:text="${complaint.dept.name}"></td>
                                 <td align="center" th:text="${#dates.format(complaint.createTime,'yyyy-MM-dd HH:mm')}"></td>
                                 <td align="center" th:text="${complaint.state eq '0'?'未受理':'已受理'}"></td>
                                 <td align="center" >
                                 	<span>
-                                		<a th:href="@{/complaint/dealPage(id=${complaint.id})}" style="color: red;" th:text="${complaint.state eq '0'?'受理':'已受理'}">受理</a>
+                                		<span th:text="${complaint.state eq '0'?'':'已受理'}"></span><a th:if="${complaint.state eq '0'}" th:href="@{/complaint/dealInfo(id=${complaint.id})}" style="color: red;" >受理</a>
                                 	</span>
                                 </td>
                             </tr>
@@ -101,10 +108,10 @@
                     <td align="right">
                         总共[[${page.total}]]条记录，当前第 [[${page.current}]] 页，共 [[${page.pages}]] 页 &nbsp;&nbsp;
 
-                        <a th:if="${page.hasPrevious()}" th:href="@{/complaint(pages=${page.current - 1},title=${title})}">上一页</a>
+                        <a th:if="${page.hasPrevious()}" th:href="@{/complaint(pages=${page.current - 1},title=${title},state=${state},startTime=${startTime},endTime=${endTime})}">上一页</a>
 
 
-                        <a th:if="${page.hasNext()}" th:href="@{/complaint(pages=${page.current + 1},title=${title})}">下一页</a>
+                    <a th:if="${page.hasNext()}" th:href="@{/complaint(pages=${page.current + 1},title=${title},state=${state},startTime=${startTime},endTime=${endTime})}">下一页</a>
 
                     </td>
                 </tr>

@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script type="text/javascript" src="/js/jquery/jquery-1.10.2.min.js"></script>
+    <link href="/css/skin1.css" rel="stylesheet" type="text/css" /></div>
+    <title>我要投诉</title>
+</head>
+
+<body class="rightBody">
+
+
+    <form id="form" class="box" name="form" action="/complaint/deal" method="post" >
+        <div class="p_d_1">
+            <div class="p_d_1_1">
+                <div class="content_info">
+                    <div class="c_crumbs"><div><b></b><strong>投诉信息</strong>&nbsp;-&nbsp投诉信息</div></div>
+                    <div class="tableH2">投诉信息</div>
+                    <table id="baseInfo" width="100%" align="center" class="list" border="0" cellpadding="0" cellspacing="0"  >
+                    <input name="id" th:value="${complaint.id}" type="hidden"/>
+                        <tr>
+                            <td class="tdBg" width="200px">投诉部门：</td>
+                            <td th:text="${complaint.dept.name}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdBg" width="200px">投诉问题：</td>
+                            <td th:text="${complaint.title}" >
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="tdBg" width="200px">详细内容：</td>
+                            <td  th:text="${complaint.content}" colspan="3"></td>
+                        </tr>
+                        <tr>
+                            <td class="tdBg" width="200px">投诉人：</td>
+                            <td th:text="${complaint.useName eq '0' ? '匿名':complaint.account.name}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="tdBg" width="200px">受理信息：</td>
+                            <td colspan="3"><textarea th:text="${complaint.dealInfo}" th:readonly="${session.loginAccount.roleId ne 1}"  id="editor" name="dealInfo"  cols="90" rows="3" text=></textarea></td>
+                        </tr>
+
+                    </table>
+
+                    <div class="tc mt20">
+                        <input type="submit" th:if="${session.loginAccount.roleId eq 1}" class="btnB2" value="提交" />
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        <input type="button"  onclick="javascript:history.go(-1)" class="btnB2" value="返回" />
+                    </div>
+                </div></div></div>
+
+
+    </form>
+</body>
+</html>

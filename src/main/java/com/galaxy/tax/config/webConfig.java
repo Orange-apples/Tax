@@ -1,6 +1,7 @@
 package com.galaxy.tax.config;
 
 import com.galaxy.tax.component.LoginInterceptor;
+import com.galaxy.tax.component.PrivilegeInterceptor;
 import com.galaxy.tax.component.StringToDate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +27,8 @@ public class webConfig {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
                         .excludePathPatterns("/","/index.html","/account/login");
+                registry.addInterceptor(new PrivilegeInterceptor()).addPathPatterns("/**")
+                        .excludePathPatterns("/","/index.html","/account/login","/account/home","/account/logout","/complaint/*");
             }
         };
     }

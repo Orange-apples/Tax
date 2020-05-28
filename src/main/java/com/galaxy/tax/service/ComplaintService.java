@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.galaxy.tax.entity.Complaint;
 
+import java.text.ParseException;
+
 /**
  * (Complaint)表服务接口
  *
@@ -12,6 +14,6 @@ import com.galaxy.tax.entity.Complaint;
  */
 public interface ComplaintService extends IService<Complaint> {
 
-    Page<Complaint> queryByPage(Integer pages, String title);
+    Page<Complaint> queryByPage(Integer pages, String title,String state,String startTime,String endTime) throws ParseException;
 
 }

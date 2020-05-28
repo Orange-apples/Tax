@@ -10,6 +10,8 @@ import com.galaxy.tax.service.ComplaintService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 /**
  * (Complaint)表服务实现类
@@ -23,9 +25,12 @@ public class ComplaintServiceImpl extends ServiceImpl<ComplaintDao, Complaint> i
 ComplaintDao complaintDao;
 
     @Override
-    public Page<Complaint> queryByPage(Integer pages, String title) {
-        return complaintDao.selectPage(new Page<Complaint>(pages,ConstantNum.PAGESIZE),new QueryWrapper<Complaint>()
-        .like("title",title)
-        );
+    public Page<Complaint> queryByPage(Integer pages, String title,String state,String startTime,String endTime) throws ParseException {
+        QueryWrapper<Complaint> wrapper = new QueryWrapper<>();
+        if(!"".equals(title))wrapper.like("title",title);
+        if(!"".equals(state))wrapper.eq("state",state);
+        if(!"".equals(endTime))wrapper.lt("create_time",endTime);
+        if(!"".equals(startTime))wrapper.gt("create_time",startTime);
+        return complaintDao.selectPage(new Page<Complaint>(pages,ConstantNum.PAGESIZE),wrapper);
     }
 }

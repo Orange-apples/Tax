@@ -61,7 +61,7 @@
         <li><a href="javascript:void(0);">行政管理</a></li>
         <li><a href="javascript:void(0);">后勤服务</a></li>
         <li><a href="javascript:void(0);">在线学习</a></li>       
-        <li><a th:href="${session.loginAccount.roleId eq 1?'/taxService/frame':'#'}">纳税服务</a> </li>
+        <li><a href="/taxService/frame">纳税服务</a> </li>
         <li><a href="javascript:void(0);">我的空间</a></li>
     </ul>
 </div>
@@ -79,7 +79,7 @@
                     <td width="76" height="100" align="center" valign="middle">
                         <div class="left-tx">
                             
-							<img src="/images/home/gs09.png" width="70" height="70" />
+							<img th:src="${'/'+session.loginAccount.headImg}" width="70" height="70" />
                         </div>
                     </td>
                     <td width="5%"><img src="/images/home/gs10.png" width="4" height="59" alt="" /></td>
@@ -139,7 +139,8 @@
                     <td height="23" th:text="${complaint.dept.name}">
                     xxx标题
                     </td>
-                    <td width="180px"  th:text="${complaint.state eq '0'?'未受理':'已受理'}">xx受理状态</td>
+                    <td width="180px" th:text="${complaint.state eq '0'?'未受理':'已受理'}"></td>
+                    <td ><a  th:if="${complaint.state ne '0'}" th:href="@{/complaint/dealInfo(id=${complaint.id})}">查看信息</a></td>
                     <td width="180px"  th:text="${complaint.useName eq '0'?'未匿名':'匿名'}">是否匿名投诉</td>
                     <td width="180px" th:text="${#dates.format(complaint.createTime,'yyyy-MM-dd HH:mm')}">投诉时间</td>
                 </tr>
