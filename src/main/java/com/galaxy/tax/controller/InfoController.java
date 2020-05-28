@@ -51,7 +51,7 @@ public class InfoController {
     @RequestMapping("/insertOrUpdate")
     public String insert(Info info, HttpServletRequest request) {
         System.out.println(info.getId());
-        info.setState("启用");
+        info.setState("1");
         info.setAccountId(info.getAccountId() == null ? ((Account) request.getSession().getAttribute("loginAccount")).getId() : info.getAccountId());
         info.setCreateTime(info.getCreateTime() == null ? new Date() : info.getCreateTime());
         infoService.saveOrUpdate(info);

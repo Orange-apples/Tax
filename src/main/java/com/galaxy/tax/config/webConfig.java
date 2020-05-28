@@ -27,7 +27,7 @@ public class webConfig {
             public void addInterceptors(InterceptorRegistry registry) {
                 registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**")
                         .excludePathPatterns("/","/index.html","/account/login");
-                registry.addInterceptor(new PrivilegeInterceptor()).addPathPatterns("/**")
+                registry.addInterceptor(new PrivilegeInterceptor()).addPathPatterns("/*")
                         .excludePathPatterns("/","/index.html","/account/login","/account/home","/account/logout","/complaint/*");
             }
         };
