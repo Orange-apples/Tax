@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Controller
 @RequestMapping("/complaint")
@@ -72,5 +74,11 @@ public class ComplaintController {
         complaint.setState("1");
         complaintService.updateById(complaint);
         return "redirect:/complaint";
+    }
+    @RequestMapping("statistics")
+    public String statistics(String year,Model model){
+        year = year==null?new SimpleDateFormat("yyyy").format(new Date()) :year;
+       model.addAttribute("list",complaintService.statistics(year));
+       return "/complaint/statisticsPage";
     }
 }

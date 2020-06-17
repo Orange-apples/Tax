@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * (Complaint)表服务实现类
@@ -32,5 +34,16 @@ ComplaintDao complaintDao;
         if(!"".equals(endTime))wrapper.lt("create_time",endTime);
         if(!"".equals(startTime))wrapper.gt("create_time",startTime);
         return complaintDao.selectPage(new Page<Complaint>(pages,ConstantNum.PAGESIZE),wrapper);
+    }
+
+    @Override
+    public List<Integer> statistics(String year) {
+        LinkedList<Integer> integers = new LinkedList<>();
+        for (int i = 1; i < 13; i++) {
+            integers.add(complaintDao.selectCount(new QueryWrapper<Complaint>()
+            .between("create_time",year+"-"+i+"-1",year+"-"+(i+1)+"-1"
+            )));
+        }
+        return integers;
     }
 }

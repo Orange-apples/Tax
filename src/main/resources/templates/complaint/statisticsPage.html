@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.staticfile.org/echarts/4.3.0/echarts.min.js"></script>
+</head>
+<body>
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<form action="/complaint/statistics" method="get">
+    <input type="text" name="year" placeholder="年份" />
+    <input type="submit" value="查询" />
+</form>
+<div id="main" style="width: 1000px;height:600px;"></div>
+<script type="text/javascript" th:inline="javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+
+    // 指定图表的配置项和数据
+    var option = {
+        title: {
+            text: '年度投诉总数'
+        },
+        tooltip: {},
+        legend: {
+            data:['总数']
+        },
+        xAxis: {
+            data: ["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"]
+        },
+        yAxis: {},
+        series: [{
+            name: '总数',
+            type: 'bar',
+            data: [[${list}]]
+        }]
+    };
+
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+</script>
+</body>
+</html>

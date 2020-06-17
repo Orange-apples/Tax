@@ -1,5 +1,6 @@
 package com.galaxy.tax.component;
 
+import com.galaxy.tax.entity.Account;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -9,11 +10,12 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        Object loginAccount = request.getSession().getAttribute("loginAccount");
+        Account loginAccount = (Account) request.getSession().getAttribute("loginAccount");
         if(loginAccount!=null){
+            System.out.println(loginAccount.getName()+"登陆了！！！");
             return true;
         }else{
-            response.sendRedirect("/");
+            response.sendRedirect("/index.html");
             return false;
         }
     }
